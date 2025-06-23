@@ -1,0 +1,34 @@
+services:
+
+  database:
+    image: mariadb:11
+    container_name: graingenes_database
+    ports:
+      - "127.0.0.1:6606:3306"
+    volumes:
+      - ./database:/var/lib/mysql
+    environment:
+      MARIADB_ROOT_PASSWORD: Mqyrcmtbb1Pt5YIN8r80X7olse9BIU1H
+      MARIADB_USER: graingenes
+      MARIADB_PASSWORD: oIOmCtXJrueZBgkDe6OBJHzTqdMgx1yw
+    restart: unless-stopped
+
+  drupal:
+    depends_on:
+      - database
+    build:
+      context: ./build
+      args:
+        UBUNTU_VERSION: 22.04
+        PHP_VERSION: 7.1
+        DRUPAL_VERSION: 7.103
+        TIMEZONE: America/Los_Angeles
+    image: graingenes/drupal
+    container_name: graingenes_drupal
+    ports:
+     #- "127.0.0.1:6607:80"
+     - "6607:80"
+    volumes:
+      - /opt/graingenes/volumes/drupal_prvt_files:/data/drupal_prvt_files
+      - /opt/graingenes/volumes/sites_all_modules:/var/www/html/sites/all
+    restart: unless-stopped

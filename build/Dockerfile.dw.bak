@@ -1,0 +1,37 @@
+ARG UBUNTU_VERSION=22.04
+FROM ubuntu:$UBUNTU_VERSION
+
+# Get build args from the docker-compose.yml file
+ARG PHP_VERSION=7.1
+ARG DRUPAL_VERSION=7.103
+ARG TIMEZONE=America/Los_Angeles
+
+# Set timezone for non-interactive installs
+RUN ln -fs /usr/share/zoneinfo/$TIMEZONE /etc/localtime
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Install additional dependencies
+RUN apt update && apt install -y \
+	software-properties-common tzdata apache2 \
+	wget nano vim tmux less
+RUN dpkg-reconfigure -f noninteractive tzdata
+
+# Install php
+RUN add-apt-repository -y ppa:ondrej/php
+RUN apt update && apt install -y php${PHP_VERSION}
+
+# Install drupal
+WORKDIR /var/www/html/GG3
+RUN wget "https://ftp.drupal.org/files/projects/drupal-${DRUPAL_VERSION}.tar.gz"
+RUN tar --strip-components=1 -xvzf "drupal-${DRUPAL_VERSION}.tar.gz"
+RUN rm "drupal-${DRUPAL_VERSION}.tar.gz"
+
+RUN echo 'alias ll="ls -lsa"' >> ~/.bashrc
+RUN echo "PS1='[\h \W]\$ '" >> ~/.bashrc
+
+# COPY source/temp/* /var/www/html
+# COPY source/settings.php /var/www/html/GG3/sites/default/settings.php
+
+# Start apache
+EXPOSE 80
+CMD ["apachectl", "-D", "FOREGROUND"]
