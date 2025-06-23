@@ -20,7 +20,7 @@ RUN apt-get install ca-certificates
 RUN add-apt-repository -y ppa:ondrej/php
 RUN apt update && apt install -y php${PHP_VERSION}
 RUN apt install -y default-mysql-client
-
+RUN add-apt-repository ppa:ondrej/php
 
 # Install additional dependencies
 RUN apt update && apt install -y \
@@ -67,6 +67,8 @@ RUN apt-get install -y \
   wget
 
 
+RUN echo 'alias ll="ls -lsa"' >> ~/.bashrc
+RUN echo "PS1='[\h \W]\$ '" >> ~/.bashrc
 
 # Install drupal
 WORKDIR /var/www/html/GG3
@@ -74,11 +76,13 @@ RUN wget "https://ftp.drupal.org/files/projects/drupal-${DRUPAL_VERSION}.tar.gz"
 RUN tar --strip-components=1 -xvzf "drupal-${DRUPAL_VERSION}.tar.gz"
 RUN rm "drupal-${DRUPAL_VERSION}.tar.gz"
 
-RUN echo 'alias ll="ls -lsa"' >> ~/.bashrc
-RUN echo "PS1='[\h \W]\$ '" >> ~/.bashrc
+RUN mkdir /var/www/html/sites/default
+WORKDIR /var/www/html/GG3/sites/default
+
+
 
 # ADD /opt/graingenes/source/temp/* /var/www/html
-COPY source/settings.php sites/default/settings.php
+# COPY /opt/graingenes/source/settings.php /var/html/GG3/sites/default
 
 # Start apache
 EXPOSE 80
