@@ -19,16 +19,20 @@ docker cp -a files graingenes_drupal:/var/www/html/GG3/sites/default/
 @ will need to be chowned
 
 docker cp source/GG3_3.png graingenes_drupal:/var/www/html/GG3/sites/default/files/
+docker cp source/color/ graingenes_drupal:/var/www/html/GG3/sites/default/files/
 
 in docker_graingenes: mkdir /var/www/html/images
 docker cp USDA_logo_trans.png graingenes_drupal:/var/www/html/images
 
+# docker cp source/ graingenes_drupal:/data/
+
+
 other things to do:
 
-a2enmod rewrite
+inside the image
 
-
-
+# I think this can be moved to DockerFile
+a2enmod rewrite proxy
 
 to reload apache:
 
