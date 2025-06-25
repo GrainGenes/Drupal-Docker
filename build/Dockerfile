@@ -78,7 +78,7 @@ RUN echo 'alias ll="ls -lsa"' >> ~/.bashrc
 RUN echo "PS1='[\h \W]\$ '" >> ~/.bashrc
 
 # ADD /opt/graingenes/source/temp/* /var/www/html
-COPY source/settings.php sites/default/settings.php
+# COPY source/settings.php sites/default/settings.php
 
 # Start apache
 EXPOSE 80

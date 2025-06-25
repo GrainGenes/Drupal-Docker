@@ -65,6 +65,8 @@ RUN apt-get install -y \
   vim \
   curl \
   wget
+	
+# RUN 'a2enmod rewrite'
 
 
 RUN echo 'alias ll="ls -lsa"' >> ~/.bashrc
@@ -76,14 +78,17 @@ RUN wget "https://ftp.drupal.org/files/projects/drupal-${DRUPAL_VERSION}.tar.gz"
 RUN tar --strip-components=1 -xvzf "drupal-${DRUPAL_VERSION}.tar.gz"
 RUN rm "drupal-${DRUPAL_VERSION}.tar.gz"
 
-RUN mkdir /var/www/html/sites/default
-WORKDIR /var/www/html/GG3/sites/default
+# RUN mkdir /var/www/html/sites/default
+# WORKDIR /var/www/html/GG3/sites/default
 
 
-
-# ADD /opt/graingenes/source/temp/* /var/www/html
-# COPY /opt/graingenes/source/settings.php /var/html/GG3/sites/default
+# these haven't been working in here so doing them in the OS after it's fire upd
+# docker cp source/settings.php graingenes_drupal:/var/www/html/GG3/sites/default
+# docker cp drupal_prvt_files/ graingenes_drupal:/data/drupal_prvt_files
+# docker cp -a source/ graingenes_drupal:/var/www/html/GG3/sites
+# docker cp -a source/apache/source/apache/000-default.conf graingenes_drupal:/etc/apache2/sites-available/000-default.conf
 
 # Start apache
 EXPOSE 80
 CMD ["apachectl", "-D", "FOREGROUND"]
+# CMD ["sleep","3600"]

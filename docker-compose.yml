@@ -24,7 +24,7 @@ services:
         PHP_VERSION: 8.4
         DRUPAL_VERSION: 7.103
         TIMEZONE: America/Los_Angeles
-    image: graingenes/drupal
+    image: graingenes_drupal
     container_name: graingenes_drupal
     ports:
      #- "127.0.0.1:6607:80"
